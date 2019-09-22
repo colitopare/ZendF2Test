@@ -1,0 +1,27 @@
+<?php
+$title = 'Ajouter une nouvelle tâche';
+$this->headTitle($title);
+?>
+
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+$form->setAttribute('action', $this->url('todo', array(
+    'action' => 'create'
+)));
+$form->prepare();
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+?>
+
+<div class="form-group">
+ <?php echo $this->formRow($form->get('title')); ?>
+ </div>
+<div class="form-group">
+ <?php echo $this->formRow($form->get('description')); ?>
+ </div>
+<div class="form-group">
+ <?php echo $this->formRow($form->get('completed')); ?>
+ </div>
+<?php echo $this->formSubmit($form->get('validate')); ?>
+ <?php echo $this->form()->closeTag(); ?>

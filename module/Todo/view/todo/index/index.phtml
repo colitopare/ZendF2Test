@@ -1,0 +1,30 @@
+<?php
+ $title = 'Mes tâches';
+ $this->headTitle($title);
+ ?>
+ <h1><?php echo $this->escapeHtml($title); ?></h1>
+
+ <table class="table">
+ <tr>
+     <th>Titre</th>
+     <th>Description</th>
+     <th>Terminée</th>
+     <th>&nbsp;</th>
+ </tr>
+ <?php foreach ($todos as $todo) : ?>
+ <tr>
+     <td><?php echo $this->escapeHtml($todo->getTitle());?></td>
+     <td><?php echo $this->escapeHtml($todo->getDescription());?></td>
+     <td><?php if ($todo->getCompleted() == 1) echo "<span class=\"label label-success\">Terminée</span>";?></td>
+     <td>
+         <a class="btn btn-default" role="button" href="<?php echo $this->url('todo',
+             array('action'=>'edit', 'id' => $todo->getId()));?>">Editer</a>
+         <a class="btn btn-danger" role="button" href="<?php echo $this->url('todo',
+             array('action'=>'delete', 'id' => $todo->getId()));?>">Supprimer</a>
+     </td>
+ </tr>
+ <?php endforeach; ?>
+ </table>
+ <p>
+     <a class="btn btn-primary" role="button" href="<?php echo $this->url('todo', array('action'=>'create'));?>">Ajouter une nouvelle tâche</a>
+ </p>

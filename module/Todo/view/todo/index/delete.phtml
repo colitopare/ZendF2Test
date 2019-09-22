@@ -1,0 +1,22 @@
+<?php
+$title = 'Supprimer la tâche ?';
+$this->headTitle($title);
+?>
+
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+    <?php echo $this->escapeHtml($todo->getTitle()); ?>
+</p>
+<?php
+$url = $this->url('todo', array(
+    'action' => 'delete',
+    'id' => $this->id
+));
+?>
+<form action="<?php echo $url; ?>" method="post">
+<div class="well">
+    <input type="hidden" name="id" value="<?php echo (int) $todo->getId(); ?>" />
+	<input type="submit" role="button" class="btn btn-primary" value="Oui" />
+	<a role="button" class="btn btn-default" href="<?php echo $this->url('todo'); ?>">Non</a>
+</div>
+</form>
