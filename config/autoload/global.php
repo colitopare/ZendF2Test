@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Global Configuration Override
  *
@@ -12,5 +13,17 @@
  */
 
 return [
-    // ...
+    // Configuration de la connexion à la BDD TodoZend
+    'db' => [
+        'driver'    => 'Pdo',
+        'dsn'       =>  'mysql:dbname=TodoZend;host:localhost',
+        'driver_options' => [
+            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+        ],
+    ],
+    'service_namager' => [
+        'factories' => [
+            'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
+        ],
+    ],
 ];
