@@ -2,6 +2,7 @@
 
 namespace Todo\Model;
 
+use Exception;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 
