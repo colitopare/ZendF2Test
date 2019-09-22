@@ -1,6 +1,9 @@
 <?php
+
 namespace Todo\Controller;
 
+use Todo\Model\Todo;
+use Todo\Form\TodoForm;
 use Zend\Mvc\Controller\AbstractActionController;
 
 /**
@@ -13,38 +16,84 @@ use Zend\Mvc\Controller\AbstractActionController;
  */
 class IndexController extends AbstractActionController
 {
-    /**
-     * Action par défaut - Lister les tâches
-     */
-    public function indexAction()
+    protected $todoTable;
+
+    public function getTodoTable()
     {
-        
+        return $this->todoTable;
     }
 
     /**
-     * Créer une nouvelle tâche
+     * Action par dï¿½faut - Lister les tï¿½ches
+     */
+    public function indexAction()
+    {
+        $todos = $this->getTodoTable()->fetchAll();
+        return ['todos' => $todos];
+    }
+
+    /**
+     * Crï¿½er une nouvelle tï¿½che
      *
      */
     public function createAction()
     {
-       
+        $form = new TodoForm;
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $todo = new Todo;
+            $form->setInputFilter($todo->getInputFilter());
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $todo->exchangeArray($form->getData());
+                $this->getTodoTable()->saveTodo($todo);
+
+                return $this->redirect()->toRoute('todo');
+            }
+        }
+        return ['form' => $form];
     }
 
     /**
-     * Editer une tâche
+     * Editer une tï¿½che
      *
      */
     public function editAction()
     {
-        
+        $id = $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            throw new \Exception("id is wrong");
+        }
+
+        try {
+            $todo = $this->todoTable->getTodo($id);
+        } catch (\Exception $e) {
+            throw $e;
+        }
+
+        $form = new TodoForm;
+        $form->bind($todo);
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($todo->getInputFilter());
+            if ($form->isValid()) {
+                $todo->exchangeArray($request->getPost()->toArray());
+                $this->getTodoTable()->saveTodo($todo);
+
+                return $this->redirect()->toRoute('todo');
+            }
+        }
+        return [
+            'id' => $id,
+            'form' => $form
+        ];
     }
 
     /**
-     * Supprimer une tâche
+     * Supprimer une tï¿½che
      *
      */
     public function deleteAction()
-    {
-        
-    }
+    { }
 }
